@@ -1,5 +1,7 @@
 ## Twacker
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 Track your Twitter friends and followers.
 
 ### Deploy
@@ -12,22 +14,15 @@ log in with Twitter.
 
 #### Deploy to Heroku
 
-Deploy to Heroku using the Heroku Button:
+Use the Heroku Button to deploy.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-#### Set the environment variables
+Set the App Name and environment variables.
 
-Using the Heroku Toolbelt CLI or your app's settings page, set the following
-config variables:
-
-```
-TWITTER_CONSUMER_KEY=consumer_key_from_app
-TWITTER_CONSUMER_SECRET=consumer_secret_from_app
-TWITTER_USERNAME=username_to_track
-```
-
-If you place these in a file called **.env** you can `gem install rake` and
-use `rake set_env_heroku` to set the environment automatically.
+* TWITTER_CONSUMER_KEY: The consumer key from your Twitter App.
+* TWITTER_CONSUMER_SECRET: The consumer secret from your Twitter App.
+* TWITTER_USERNAME: The Twitter username to track.
 
 #### Set Heroku Scheduler
 
