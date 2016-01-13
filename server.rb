@@ -4,7 +4,7 @@ require 'mongo'
 require 'json/ext'
 require 'date'
 
-mongo_uri = ENV['MONGOHQ_URL'] || 'mongodb://127.0.0.1:27017/twacker'
+mongo_uri = ENV['MONGOLAB_URI'] || 'mongodb://127.0.0.1:27017/twacker'
 
 configure do
   db = Mongo::Client.new(mongo_uri)
