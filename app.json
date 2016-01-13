@@ -1,0 +1,31 @@
+{
+  "name": "Twacker",
+  "description": "Track your Twitter friends followers.",
+  "keywords": [
+    "twitter",
+    "tracking",
+    "friends",
+    "followers",
+    "following"
+  ],
+  "repository": "https://github.com/danasilver/twacker",
+  "env": {
+    "TWITTER_CONSUMER_KEY": {
+      "description": "The consumer key from your Twitter App.",
+      "required": true
+    },
+    "TWITTER_CONSUMER_SECRET": {
+      "description": "The consumer secret from your Twitter App.",
+      "required": true
+    },
+    "TWITTER_USERNAME": {
+      "description": "The Twitter username to track.",
+      "required": true
+    }
+  },
+  "image": "heroku/ruby",
+  "addons": [
+    "mongolab:sandbox",
+    "scheduler:standard"
+  ]
+}
