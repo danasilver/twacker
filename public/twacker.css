@@ -1,0 +1,21 @@
+html, body {
+  margin: 0;
+}
+
+header, main, footer {
+  width: 960px;
+  margin: auto;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
+header h1 {
+  height: 50px;
+  font-weight: 300;
+}
+
+header img {
+  height: 50px;
+  margin-top: -5px;
+  margin-right: 5px;
+  float: left;
+}

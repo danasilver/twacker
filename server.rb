@@ -13,11 +13,12 @@ configure do
   helpers Sinatra::Param
 end
 
-before do
-  content_type :json
+get '/' do
+  p settings.public_folder
+  send_file File.join(settings.public_folder, 'index.html')
 end
 
-get '/' do
+get '/stats' do
   aggregated = Array.new
   days = settings.mongo_db[:twacker_stats].find({'date' => {'$gt' => Date::today - 30}})
 
@@ -35,12 +36,14 @@ get '/' do
     }
   end
 
+  content_type :json
   aggregated.to_json
 end
 
 get '/profile' do
   param :user_id, Integer, required: true
 
+  content_type :json
   profile = settings.mongo_db[:profiles].find(
     {'user_id' => params[:user_id]}
   ).projection({'_id' => false}).first.to_json
