@@ -13,8 +13,11 @@ configure do
   helpers Sinatra::Param
 end
 
+set :public_folder, File.dirname(__FILE__) + '/static'
+
 get '/' do
-  send_file File.join(settings.public_folder, 'index.html')
+  @username = ENV['TWITTER_USERNAME']
+  erb :index
 end
 
 get '/stats' do
