@@ -2,7 +2,7 @@ html, body {
   margin: 0;
 }
 
-header, main, footer {
+header, section, footer {
   width: 960px;
   margin: auto;
   font-family: "Helvetica Neue", Helvetica, sans-serif;
@@ -18,4 +18,46 @@ header img {
   margin-top: -5px;
   margin-right: 5px;
   float: left;
+}
+
+h2 {
+  text-align: center;
+  font-weight: 300;
+}
+
+.followers {
+  float: left;
+}
+
+.friends {
+  float: right;
+}
+
+g.positive rect {
+  fill: #2ca02c;
+}
+
+g.negative rect {
+  fill: #d62728;
+}
+
+.y.axis line {
+  fill: none;
+  stroke: #666;
+  shape-rendering: crispEdges;
+}
+
+.x.axis line {
+  fill: none;
+  stroke: #e0e0e0;
+  shape-rendering: crispEdges;
+}
+
+.axis path {
+  fill: none;
+  stroke: none;
+}
+
+.axis text {
+  font-size: 10px;
 }
