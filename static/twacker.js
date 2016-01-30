@@ -4,7 +4,7 @@
   // Use the same scale for both charts
   var x = d3.scale.linear();
 
-  d3.json('/test.json', function(stats) {
+  d3.json('/stats', function(stats) {
     // Map followers and friends arrays from stats
     // Reverse the arrays after sorting to preserve
     // the difference ordering
