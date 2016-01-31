@@ -124,7 +124,10 @@
           .append('g')
             .attr('class', 'y axis')
             .attr('transform', 'translate(' + (width + 100) + ',0)')
-            .call(yAxis);
+            .call(yAxis)
+          .selectAll('text')
+            .style('text-anchor', 'middle')
+            .attr('dx', '10px');
       }
     }
 

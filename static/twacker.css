@@ -67,7 +67,6 @@ g.negative rect {
 
 .y.axis text {
   font-size: 13px;
-  text-anchor: middle;
 }
 
 .x.axis line {
