@@ -23,6 +23,7 @@ header img {
 h2 {
   text-align: center;
   font-weight: 300;
+  width: 380px;
 }
 
 .followers {
@@ -44,6 +45,11 @@ h2 {
   text-decoration: none;
 }
 
+.dates {
+  width: 200px;
+  float: left;
+}
+
 g.positive rect {
   fill: #2ca02c;
 }
@@ -52,10 +58,16 @@ g.negative rect {
   fill: #d62728;
 }
 
+.y.centerline line,
 .y.axis line {
   fill: none;
   stroke: #666;
   shape-rendering: crispEdges;
+}
+
+.y.axis text {
+  font-size: 13px;
+  text-anchor: middle;
 }
 
 .x.axis line {

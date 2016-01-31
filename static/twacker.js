@@ -1,9 +1,6 @@
 (function() {
   var date = d3.time.format('%Y-%m-%d');
 
-  // Use the same scale for both charts
-  var x = d3.scale.linear();
-
   d3.json('/stats', function(stats) {
     // Map followers and friends arrays from stats
     // Reverse the arrays after sorting to preserve
@@ -36,38 +33,53 @@
       return Math.max(d.followers_added.length, d.followers_removed.length,
                       d.friends_added.length, d.friends_removed.length);
     });
-    x.domain([-lim, lim]);
 
-    var followersChart = verticalBarChart().data(followers);
+    var followersChart = verticalBarChart()
+      .data(followers)
+      .xDomain([-lim, lim])
+      .showDates(true);
     d3.select('.followers').call(followersChart);
 
-    var friendsChart = verticalBarChart().data(friends);
+    var friendsChart = verticalBarChart()
+      .data(friends)
+      .xDomain([-lim, lim]);
     d3.select('.friends').call(friendsChart);
   });
 
   function verticalBarChart() {
     var margin = {top: 20, right: 10, bottom: 40, left: 10};
     var width = 480 - 100 - margin.right - margin.left;
-    var height = 600 - margin.top - margin.bottom;
 
-    var y = d3.scale.ordinal().rangeRoundBands([0, height], 0.2);
+    var x = d3.scale.linear();
+    var y = d3.scale.ordinal();
     var xAxis = d3.svg.axis()
         .scale(x)
         .orient('top')
-        .tickFormat(d3.format('d'))
-        .tickSize(-height, 0, 0);
+        .tickFormat(d3.format('d'));
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient('right')
-        .tickFormat(d3.time.format('%m/%d'));
+        .tickSize(0, 0, 0)
+        .tickFormat(d3.time.format('%-m/%d/%y'));
+
+    // Set data after creating the chart
     var data;
+
+    // Default to not showing dates on the xAxis
+    var showDates = false;
 
     function chart(selection) {
       x.range([0, width]);
-      y.domain(data.map(function(d) { return d.date; }));
+      y.domain(data.map(function(d) { return d.date; }))
+        .rangeRoundBands([0, height], 0.2);
+
+      xAxis.tickSize(-height, 0, 0);
 
       var svg = selection.append('svg')
-          .attr('width', width + margin.left + margin.right)
+          .attr('width', function () {
+            if (showDates) return width + 200 + margin.left + margin.right;
+            return width + margin.left + margin.right;
+          })
           .attr('height', height + margin.top + margin.bottom)
         .append('g')
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -101,16 +113,37 @@
           .attr('ry', 7);
 
       svg.append('g')
-          .attr('class', 'y axis')
+          .attr('class', 'y centerline')
         .append('line')
           .attr('x1', x(0))
           .attr('x2', x(0))
           .attr('y2', height);
+
+      if (showDates) {
+        svg
+          .append('g')
+            .attr('class', 'y axis')
+            .attr('transform', 'translate(' + (width + 100) + ',0)')
+            .call(yAxis);
+      }
     }
 
     chart.data = function(value) {
       if (!arguments.length) return data;
       data = value;
+      height = value.length * 35 - margin.top - margin.bottom;
+      return chart;
+    }
+
+    chart.showDates = function(value) {
+      if (!arguments.length) return showDates;
+      showDates = value;
+      return chart;
+    }
+
+    chart.xDomain = function(value) {
+      if (!arguments.length) return x.domain();
+      x.domain(value);
       return chart;
     }
 
