@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'sinatra/param'
 require 'mongo'
 require 'json/ext'
 require 'date'
@@ -9,11 +8,8 @@ mongo_uri = ENV['MONGOLAB_URI'] || 'mongodb://127.0.0.1:27017/twacker'
 configure do
   db = Mongo::Client.new(mongo_uri)
   set :mongo_db, db
-
-  helpers Sinatra::Param
+  set :public_folder, File.dirname(__FILE__) + '/static'
 end
-
-set :public_folder, File.dirname(__FILE__) + '/static'
 
 get '/' do
   @username = ENV['TWITTER_USERNAME']
@@ -31,10 +27,10 @@ get '/stats' do
       date: today[:date].strftime('%Y-%m-%d'),
       followers_count:   today[:followers].length,
       friends_count:     today[:friends].length,
-      followers_added:   yesterday ? today[:followers] - yesterday[:followers] : [],
-      followers_removed: yesterday ? yesterday[:followers] - today[:followers] : [],
-      friends_added:     yesterday ? today[:friends] - yesterday[:friends] : [],
-      friends_removed:   yesterday ? yesterday[:friends] - today[:friends] : []
+      followers_added:   profiles(yesterday ? today[:followers] - yesterday[:followers] : []),
+      followers_removed: profiles(yesterday ? yesterday[:followers] - today[:followers] : []),
+      friends_added:     profiles(yesterday ? today[:friends] - yesterday[:friends] : []),
+      friends_removed:   profiles(yesterday ? yesterday[:friends] - today[:friends] : [])
     }
   end
 
@@ -42,11 +38,10 @@ get '/stats' do
   aggregated.to_json
 end
 
-get '/profile' do
-  param :user_id, Integer, required: true
+def profiles(ids)
+  return [] if ids.empty?
 
-  content_type :json
-  profile = settings.mongo_db[:profiles].find(
-    {'user_id' => params[:user_id]}
-  ).projection({'_id' => false}).first.to_json
+  settings.mongo_db[:profiles].find(
+    {:$or => ids.map {|id| {'user_id' => id}}}
+  ).projection({'_id' => false}).to_a
 end
