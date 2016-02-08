@@ -90,29 +90,95 @@
           .attr('class', 'x axis')
           .call(xAxis);
 
-      svg.selectAll('.bar.negative')
+      var negative = svg.selectAll('.bar.negative')
           .data(data)
         .enter().append('g')
           .attr('class', 'bar negative')
           .attr('transform', function(d) {
-            return 'translate(' + x(-d.removed.length) + ',' + y(d.date) + ')'; })
-        .append('rect')
+            return 'translate(0,' + y(d.date) + ')'; });
+
+      negative.append('rect')
+          .attr('class', 'cover')
+          .attr('height', function(d, i) { return (width / 10) * Math.ceil((data[i - 1] || data[0]).removed.length / 5); })
+          .attr('width', width / 2)
+          .attr('y', -5)
+          .style('fill', '#fff');
+
+      negative.append('g')
+          .attr('class', 'x axis')
+          .attr('transform', 'translate(0,-5)')
+          .call(xAxis.tickFormat(''));
+
+      negative.append('rect')
+          .attr('x', function(d) { return x(-d.removed.length); })
           .attr('height', y.rangeBand())
           .attr('width', function(d) { return Math.abs(x(d.removed.length) - x(0)); })
           .attr('rx', 7)
           .attr('ry', 7);
 
-      svg.selectAll('.bar.positive')
+      negative.append('g')
+        .selectAll('image')
+          .data(function(d) { return d.removed; })
+        .enter().append('g')
+          .attr('transform', function (d, i) {
+            var xBase = x(0) - width / 10;
+            var xOffset = (i % 5) * (width / 10) ;
+            var yBase = y.rangeBand();
+            var yOffset = (width / 10) * Math.floor(i / 5);
+            return 'translate(' + (xBase - xOffset) + ',' + (yBase + yOffset) + ')';
+          })
+        .append('image')
+          .attr('x', 1)
+          .attr('y', 1)
+          .attr('height', width / 10 - 2)
+          .attr('width', width / 10 - 2)
+          .attr('xlink:href', function(d) { return d.profile_image_url; });
+
+      var positive = svg.selectAll('.bar.positive')
           .data(data)
         .enter().append('g')
           .attr('class', 'bar positive')
           .attr('transform', function(d) {
-            return 'translate(' + x(0) + ',' + y(d.date) + ')'; })
-        .append('rect')
+            return 'translate(' + x(0) + ',' + y(d.date) + ')'; });
+
+      positive.append('rect')
+          .attr('class', 'cover')
+          .attr('height', function(d, i) { return (width / 10) * Math.ceil((data[i - 1] || data[0]).added.length / 5); })
+          .attr('width', width / 2)
+          .attr('y', -5)
+          .style('fill', '#fff');
+
+      positive.append('g')
+          .attr('class', 'x axis')
+          .attr('transform', 'translate(0,-5)')
+          .call(xAxis.tickFormat(''));
+
+      positive.append('rect')
           .attr('height', y.rangeBand())
           .attr('width', function(d) { return Math.abs(x(d.added.length) - x(0)); })
           .attr('rx', 7)
           .attr('ry', 7);
+
+      positive.append('g')
+        .selectAll('image')
+          .data(function(d) { return d.added; })
+        .enter().append('g')
+          .attr('transform', function (d, i) {
+            var xBase = 1;
+            var xOffset = (i % 5) * (width / 10);
+            var yBase = y.rangeBand();
+            var yOffset = (width / 10) * Math.floor(i / 5);
+            return 'translate(' + (xBase + xOffset) + ',' + (yBase + yOffset) + ')';
+          })
+        .append('image')
+          .attr('x', 1)
+          .attr('y', 1)
+          .attr('height', width / 10 - 2)
+          .attr('width', width / 10 - 2)
+          .attr('xlink:href', function(d) { return d.profile_image_url; });
+
+      d3.selectAll('.bar .x.axis line')
+          .attr('y2', function () { return this.parentNode.parentNode.parentNode.querySelector('.cover').getAttribute('height'); });
 
       var moving = d3.selectAll('.bar, .date');
       function move(target) {
