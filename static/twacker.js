@@ -140,9 +140,9 @@
                 .html(d.name + '<br>@' + d.screen_name);
 
             var image = d3.select(this),
-                ctm = this.getScreenCTM(),
-                left = ctm.e + image.attr('width') / 4 - parseFloat(tooltip.style('width')) / 2,
-                top = ctm.f - image.attr('height') / 2 - parseFloat(tooltip.style('height')) - 7;
+                bounds = this.getBoundingClientRect(),
+                left = bounds.left + image.attr('width') / 4 - parseFloat(tooltip.style('width')) / 2,
+                top = bounds.top + document.body.scrollTop - image.attr('height') / 2 - parseFloat(tooltip.style('height')) - 7;
 
             tooltip
                 .style('left', left + 'px')
@@ -203,9 +203,9 @@
                 .html(d.name + '<br>@' + d.screen_name);
 
             var image = d3.select(this),
-                ctm = this.getScreenCTM(),
-                left = ctm.e + image.attr('width') / 4 - parseFloat(tooltip.style('width')) / 2,
-                top = ctm.f - image.attr('height') / 2 - parseFloat(tooltip.style('height')) - 7;
+                bounds = this.getBoundingClientRect(),
+                left = bounds.left + image.attr('width') / 4 - parseFloat(tooltip.style('width')) / 2,
+                top = bounds.top + document.body.scrollTop - image.attr('height') / 2 - parseFloat(tooltip.style('height')) - 7;
 
             tooltip
                 .style('left', left + 'px')
