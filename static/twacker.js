@@ -127,6 +127,9 @@
             var yOffset = (width / 10) * Math.floor(i / 5);
             return 'translate(' + (xBase - xOffset) + ',' + (yBase + yOffset) + ')';
           })
+        .append('a')
+          .attr('xlink:href', function(d) { return d.url; })
+          .attr('target', 'blank')
         .append('image')
           .attr('x', 1)
           .attr('y', 1)
@@ -190,6 +193,9 @@
             var yOffset = (width / 10) * Math.floor(i / 5);
             return 'translate(' + (xBase + xOffset) + ',' + (yBase + yOffset) + ')';
           })
+        .append('a')
+          .attr('xlink:href', function(d) { return d.url; })
+          .attr('target', 'blank')
         .append('image')
           .attr('x', 1)
           .attr('y', 1)
