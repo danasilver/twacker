@@ -123,7 +123,7 @@
           .attr('transform', function (d, i) {
             var xBase = x(0) - width / 10;
             var xOffset = (i % 5) * (width / 10) ;
-            var yBase = y.rangeBand();
+            var yBase = y.rangeBand() + 1;
             var yOffset = (width / 10) * Math.floor(i / 5);
             return 'translate(' + (xBase - xOffset) + ',' + (yBase + yOffset) + ')';
           })
@@ -132,7 +132,27 @@
           .attr('y', 1)
           .attr('height', width / 10 - 2)
           .attr('width', width / 10 - 2)
-          .attr('xlink:href', function(d) { return d.profile_image_url; });
+          .attr('xlink:href', function(d) { return d.profile_image_url; })
+          .on('mouseover', function(d) {
+            var tooltip = d3.select('.tooltip');
+
+            tooltip
+                .html(d.name + '<br>@' + d.screen_name);
+
+            var image = d3.select(this),
+                ctm = this.getScreenCTM(),
+                left = ctm.e + image.attr('width') / 4 - parseFloat(tooltip.style('width')) / 2,
+                top = ctm.f - image.attr('height') / 2 - parseFloat(tooltip.style('height')) - 7;
+
+            tooltip
+                .style('left', left + 'px')
+                .style('top', top + 'px')
+                .style('visibility', 'visible');
+          })
+          .on('mouseout', function() {
+            d3.select('.tooltip')
+                .style('visibility', 'hidden');
+          });
 
       var positive = svg.selectAll('.bar.positive')
           .data(data)
@@ -166,7 +186,7 @@
           .attr('transform', function (d, i) {
             var xBase = 1;
             var xOffset = (i % 5) * (width / 10);
-            var yBase = y.rangeBand();
+            var yBase = y.rangeBand() + 1;
             var yOffset = (width / 10) * Math.floor(i / 5);
             return 'translate(' + (xBase + xOffset) + ',' + (yBase + yOffset) + ')';
           })
@@ -175,7 +195,27 @@
           .attr('y', 1)
           .attr('height', width / 10 - 2)
           .attr('width', width / 10 - 2)
-          .attr('xlink:href', function(d) { return d.profile_image_url; });
+          .attr('xlink:href', function(d) { return d.profile_image_url; })
+          .on('mouseover', function(d) {
+            var tooltip = d3.select('.tooltip');
+
+            tooltip
+                .html(d.name + '<br>@' + d.screen_name);
+
+            var image = d3.select(this),
+                ctm = this.getScreenCTM(),
+                left = ctm.e + image.attr('width') / 4 - parseFloat(tooltip.style('width')) / 2,
+                top = ctm.f - image.attr('height') / 2 - parseFloat(tooltip.style('height')) - 7;
+
+            tooltip
+                .style('left', left + 'px')
+                .style('top', top + 'px')
+                .style('visibility', 'visible');
+          })
+          .on('mouseout', function() {
+            d3.select('.tooltip')
+                .style('visibility', 'hidden');
+          });
 
       d3.selectAll('.bar .x.axis line')
           .attr('y2', function () { return this.parentNode.parentNode.parentNode.querySelector('.cover').getAttribute('height'); });
@@ -255,7 +295,7 @@
           .attr('y', y.rangeBand() / 2)
           .attr('dy', '.32em')
           .style('text-anchor', 'middle')
-          .style('font-size', 13)
+          .style('font-size', '13px')
           .text(function(d) { return format(d.date); });
     }
 
@@ -268,4 +308,13 @@
 
     return chart;
   }
+
+  var tooltip = d3.select('body').append('svg')
+      .attr('width', 200)
+      .attr('height', 100)
+    .append('g')
+      .attr('transform', 'translate(10, 10)');
+
+  tooltip.append('text')
+      .text()
 })();
