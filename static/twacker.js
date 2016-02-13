@@ -37,7 +37,7 @@
     var lim = d3.max(stats, function(d) {
       return Math.max(d.followers_added.length, d.followers_removed.length,
                       d.friends_added.length, d.friends_removed.length);
-    });
+    }) || 5;
 
     var datesChart = dates()
       .data(stats.reverse());
@@ -53,7 +53,12 @@
       .xDomain([-lim, lim]);
     d3.select('.friends').call(friendsChart);
 
-    dispatch.open()
+    if (stats.length) {
+      dispatch.open();
+    } else {
+      d3.selectAll('.no-data')
+        .classed('hidden', false);
+    }
   });
 
   function verticalBarChart() {
@@ -329,13 +334,4 @@
 
     return chart;
   }
-
-  var tooltip = d3.select('body').append('svg')
-      .attr('width', 200)
-      .attr('height', 100)
-    .append('g')
-      .attr('transform', 'translate(10, 10)');
-
-  tooltip.append('text')
-      .text()
 })();
