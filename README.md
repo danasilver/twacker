@@ -20,16 +20,16 @@ Use the Heroku Button to deploy.
 
 Set the App Name and environment variables.
 
-* TWITTER_CONSUMER_KEY: The consumer key from your Twitter App.
-* TWITTER_CONSUMER_SECRET: The consumer secret from your Twitter App.
-* TWITTER_USERNAME: The Twitter username to track.
+* `TWITTER_CONSUMER_KEY` The consumer key from your Twitter App.
+* `TWITTER_CONSUMER_SECRET` The consumer secret from your Twitter App.
+* `TWITTER_USERNAME` The Twitter username to track.
 
 #### Set Heroku Scheduler
 
 After deploying to Heroku add the **stats.rb** task to
 [Heroku Scheduler](https://devcenter.heroku.com/articles/scheduler#scheduling-jobs).
 
-You'll want to run the following task **daily**.
+You'll want to run the following task **daily** at the end of the day.
 
 ```
 ruby stats.rb
