@@ -50,12 +50,31 @@ h2 {
   float: left;
 }
 
+.date {
+  cursor: pointer;
+}
+
+.date rect {
+  fill: #fff;
+  visibility: hidden;
+}
+
+.date:hover rect,
+.date.open rect {
+  fill: #e5e5e5;
+  visibility: visible;
+}
+
 g.positive rect {
   fill: #2ca02c;
 }
 
 g.negative rect {
   fill: #d62728;
+}
+
+.bar:hover {
+  cursor: pointer;
 }
 
 .y.centerline line,

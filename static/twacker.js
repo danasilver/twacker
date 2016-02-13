@@ -90,10 +90,10 @@
           .attr('class', 'x axis')
           .call(xAxis);
 
-      var negative = svg.selectAll('.bar.negative')
+      var negative = svg.selectAll('.bar-group.negative')
           .data(data)
         .enter().append('g')
-          .attr('class', 'bar negative')
+          .attr('class', 'bar-group negative')
           .attr('transform', function(d) {
             return 'translate(0,' + y(d.date) + ')'; });
 
@@ -110,6 +110,7 @@
           .call(xAxis.tickFormat(''));
 
       negative.append('rect')
+          .attr('class', 'bar')
           .attr('x', function(d) { return x(-d.removed.length); })
           .attr('height', y.rangeBand())
           .attr('width', function(d) { return Math.abs(x(d.removed.length) - x(0)); })
@@ -157,10 +158,10 @@
                 .style('visibility', 'hidden');
           });
 
-      var positive = svg.selectAll('.bar.positive')
+      var positive = svg.selectAll('.bar-group.positive')
           .data(data)
         .enter().append('g')
-          .attr('class', 'bar positive')
+          .attr('class', 'bar-group positive')
           .attr('transform', function(d) {
             return 'translate(' + x(0) + ',' + y(d.date) + ')'; });
 
@@ -177,6 +178,7 @@
           .call(xAxis.tickFormat(''));
 
       positive.append('rect')
+          .attr('class', 'bar')
           .attr('height', y.rangeBand())
           .attr('width', function(d) { return Math.abs(x(d.added.length) - x(0)); })
           .attr('rx', 7)
@@ -223,11 +225,16 @@
                 .style('visibility', 'hidden');
           });
 
-      d3.selectAll('.bar .x.axis line')
+      d3.selectAll('.bar-group .x.axis line')
           .attr('y2', function () { return this.parentNode.parentNode.parentNode.querySelector('.cover').getAttribute('height'); });
 
-      var moving = d3.selectAll('.bar, .date');
+      var moving = d3.selectAll('.bar-group, .date');
       function move(target) {
+        moving
+            .classed('open', false)
+            .filter(function(d) { return d.date === target.date; })
+            .classed('open', true);
+
         moving
             .filter(function (d) { return d.date < target.date; })
             .transition()
@@ -245,7 +252,7 @@
             });
       }
 
-      moving.on('click', move);
+      d3.selectAll('.bar, .date').on('click', move);
       dispatch.on('open', function() { move(d3.select('.date').datum()); });
 
       svg.append('g')
@@ -291,12 +298,20 @@
         .append('g')
           .attr('transform', 'translate(0,' + margin.top + ')');
 
-      svg.selectAll('.date')
+      var dates = svg.selectAll('.date')
           .data(data)
         .enter().append('g')
           .attr('class', 'date')
-          .attr('transform', function(d) { return 'translate(0,' + y(d.date) + ')'; })
-        .append('text')
+          .attr('transform', function(d) { return 'translate(0,' + y(d.date) + ')'; });
+
+      dates.append('rect')
+          .attr('x', width / 2 - 30)
+          .attr('y', y.rangeBand() / 2 - 13)
+          .attr('width', 60)
+          .attr('height', 25)
+          .attr('ry', 5);
+
+      dates.append('text')
           .attr('x', width / 2)
           .attr('y', y.rangeBand() / 2)
           .attr('dy', '.32em')
