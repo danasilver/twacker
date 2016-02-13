@@ -306,7 +306,7 @@
 
       dates.append('rect')
           .attr('x', width / 2 - 30)
-          .attr('y', y.rangeBand() / 2 - 13)
+          .attr('y', y.rangeBand() / 2 - 12)
           .attr('width', 60)
           .attr('height', 25)
           .attr('ry', 5);
