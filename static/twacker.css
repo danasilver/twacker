@@ -8,6 +8,12 @@ header, section, footer {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 header h1 {
   height: 50px;
   font-weight: 300;
@@ -16,6 +22,13 @@ header h1 {
 header .hashtag {
   color: #666;
   padding-right: 3px;
+}
+
+footer {
+  width: 960px;
+  margin: 20px auto;
+  text-align: center;
+  font-weight: 300;
 }
 
 h2 {
@@ -46,9 +59,13 @@ h2 {
   line-height: 50px;
 }
 
-.who a {
+.who a, footer a {
   color: #55acee;
   text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }
 
 .dates {
