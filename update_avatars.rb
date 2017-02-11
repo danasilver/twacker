@@ -17,7 +17,6 @@ mongo[:profiles].find().to_a.each do |profile|
 
   begin
     user = twitter.user(profile[:user_id])
-    # p profile[:profile_image_url]
     p "Updating #{profile[:screen_name]}'s avatar to #{user.profile_image_url.to_s}"
     mongo[:profiles].update_one(
       {'user_id' =>  profile[:user_id]},
